@@ -1,0 +1,19 @@
+{
+    "name": "daniel/universal",
+    "description": "projet de cr\u0000ation d'un mod\u0000le de donn\u0000e universel",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Dan\\": "App/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Daniel Assani",
+            "email": "devasddaniel@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
