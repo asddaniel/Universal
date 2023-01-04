@@ -4,7 +4,7 @@ use \Exception;
 
 class Table extends Base { // construction d'une table relative à une base de données
 	
-  
+  use fonction;
 
     public function get(int $id){
         $data = $this->all();
@@ -45,7 +45,7 @@ class Table extends Base { // construction d'une table relative à une base de d
         $id = $records[$data['id']]["id"];
         $db = $this->init_connection();
         $relations = array_map(function($e){
-            return remove_numeric_keys($e);
+            return $this->remove_numeric_keys($e);
         }, $this->requetteAll('SELECT destination FROM relations WHERE origine="'.$id.'"'));
     //   print_r($relations);
     //   print_r($data);
@@ -113,7 +113,7 @@ class Table extends Base { // construction d'une table relative à une base de d
         $colonne = $GLOBALS[$this->get_class_name()]["colonne"]??$this->requetteAll('SELECT * FROM colonnes WHERE id_table=(SELECT id FROM donnees WHERE valeur="'.$this->get_class_name().'" AND colonne_id="-1" )');
         $GLOBALS[$this->get_class_name()]["colonne"] = $colonne;
         $colonne = array_map(function($e){
-            return remove_numeric_keys($e)["nom"];
+            return $this->remove_numeric_keys($e)["nom"];
         }, $colonne);
         return $colonne;
 

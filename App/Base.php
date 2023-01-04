@@ -5,6 +5,7 @@ namespace Dan;
 use \pdo;
 class Base{
 
+    use fonction;
 
 	private $user;
 	private $db_name;
@@ -36,13 +37,7 @@ class Base{
  	$this->pass = $structure->definition->password;
  	$this->db_name = $structure->definition->db_name;
  }
-//  private function get_table_id($table_name){
-// 	if(isset($_GLOBALS[$table_name])){
-// 		return $_GLOBALS[$table_name]["id"];
-// 	}
-// 	$GLOBALS[$table_name] = ["id"=>$this->requette("SELECT id FROM $table_name  WHERE id_table='-1'")];
-// 	return $_GLOBALS[$table_name]["id"]; 
-//  }
+
  private function get_colonne_id(){
 	$table_id = $this->get_table_id(str_replace("App\\", "", get_class()));
 	return requetteAll("SELECT id FROM colonnes WHERE id_table=$table_id");
@@ -51,17 +46,17 @@ class Base{
 	$id = $this->get_table_id();
       $enregistrements = $this->requetteAll('SELECT id FROM enregistrements WHERE id_table="'.$id.'"');
 	  return  array_map(function($e){
-		return remove_numeric_keys($e);
+		return $this->remove_numeric_keys($e);
 	}, $enregistrements);
  }
  protected function get_all_relations(){
 	return  array_map(function($e){
-		return remove_numeric_keys($e);
+		return $this->remove_numeric_keys($e);
 	}, $this->requetteAll("SELECT * FROM relations"));
  }
  public function get_all_data(){
 	return array_filter(array_map(function($e){
-          return remove_numeric_keys($e);
+          return $this->remove_numeric_keys($e);
 	}, $this->requetteAll("SELECT * FROM donnees")), function($data){
 		// echo $data["colonne_id"]=!'fhdhdjfhdjfh'?"ok bon": "echecs";
 		return (int)$data["colonne_id"]>=0;
@@ -78,7 +73,7 @@ class Base{
 		$e[count($e)] =["id"=>$GLOBALS['temp_i']];
 		$GLOBALS['temp_i']++;
 		// print_r($e);
-		return array_ordonne($e);
+		return $this->array_ordonne($e);
 	}, $this->match_data($all, $data));
 	$final_ending = [];
 	foreach ($final_data as $key => $value) {
@@ -115,7 +110,7 @@ class Base{
  public function get_value_in_data($data, $key){
 	$GLOBALS["tempo"] = $key;
 	// var_dump($data);
-       return array_ordonne(array_filter($data, function($e){
+       return $this->array_ordonne(array_filter($data, function($e){
 		// echo $e["id"];
              return $e["id"] == $GLOBALS["tempo"];
 	   }))[0];
@@ -144,7 +139,7 @@ $connexion=new PDO("mysql:host=".$this->hote,$this->login,$this->pass, array(PDO
 $bdd = new PDO('mysql:host='.$this->hote.';dbname='.$this->db_name, $this->login, $this->pass,
 $pdo_options);
 	 // création des  table pour enregistrement comptes utilisateur
-include("./migration.php");
+include(__DIR__."\migration.php");
 
 
  	}catch(Exception $e){
@@ -185,8 +180,8 @@ public function requette($req){
 
 	$masque1 = "'";
 	$masque2 = '"';
-	if(longueur_chaine_filtre($req, $masque1)==longueur_chaine($req)){
-		if(longueur_chaine_filtre($req, $masque2)){
+	if($this->longueur_chaine_filtre($req, $masque1)==$this->longueur_chaine($req)){
+		if($this->longueur_chaine_filtre($req, $masque2)){
 			//var_dump($req);
 			$reponse=$connect->query($req);
 	
@@ -235,8 +230,8 @@ public function requetteAll($req){
 	$connect =$this->init_connection();
 	$masque1 = "'";
 	$masque2 = '"';
-	if(longueur_chaine_filtre($req, $masque1)==longueur_chaine($req)){
-		if(longueur_chaine_filtre($req, $masque2)){
+	if($this->longueur_chaine_filtre($req, $masque1)==$this->longueur_chaine($req)){
+		if($this->longueur_chaine_filtre($req, $masque2)){
 			$reponse=$connect->query($req);
 	
 	$donnees = $reponse->fetchAll();
