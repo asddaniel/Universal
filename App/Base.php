@@ -301,50 +301,9 @@ if(count($table1)==count($table2)){
 return $nouveau;	
 }else{ return false;}
 }
-public function update($table, $colonne, $data, $reference){
-	/*
-@$table : contient le nom de la table 
-@colonne : contient un tableau censé contenir la liste des éléments à modifier dans la table
-@data : contient un tableau contenant toutes les valeurs à modifier de maniere ordonné
-@reference : contient la refernces des donnée ex: id=5
 
 
-	**/
-	$connect = $this->init_connection();
-	$modification = '';
-	$array_fetch = array();
-	// var_dump($data);
-	for($i=0; $i<count($colonne);$i++){
 
-		if($i==0){$modification = ''.$colonne[$i].'=:'.$colonne[$i];
-        $array_fetch[$colonne[$i]] = $data[$i]; }else{
-		$modification =$modification.', '.$colonne[$i].'=:'.$colonne[$i];
-        $array_fetch[$colonne[$i]] = $data[$i];
- }
-	}
-	$requette = "UPDATE ".$table." SET ".$modification." WHERE ".$reference;
-	
-	$base = $connect->prepare($requette);
-
-	$base->execute($array_fetch);
-}
-
-public function supprimer($table, $reference){
-	/*
-	@table : contient le nom de la table 
-	@reference : contient le reference ex : id=3
-
-	**/
-
-	$connect = $this->init_connection();
-	$modification = '';
-	
-	$requette = "DELETE FROM ".$table." WHERE ".$reference;
-	
-	$base = $connect->query($requette);
-	//$base->execute($requette);
-
-}
 
 
 
