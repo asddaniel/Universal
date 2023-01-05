@@ -12,6 +12,14 @@ GNU General Public License (GPL) version 2
 ## Demarrer un nouveau programme 
 
 avant de commencer vous devez crée un fichier JSON dans lequel vous devez mettre la configuration de votre base de donnée afin qu'**universal** puisse l'utilisez ce fichier doit s'appeler ***config-bdd.json***
+voici un exemple de configuration 
+
+`{ 
+    "db_name": "universal",
+    "username":"root",
+    "password":"",
+    "host":"localhost"
+}`
 
 ## crée un nouveau table 
 
